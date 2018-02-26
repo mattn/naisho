@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"gopkg.in/gomail.v1"
@@ -26,10 +27,12 @@ func sendByGmail(m *mail) (err error) {
 	if err != nil {
 		return err
 	}
+	tempfileName := tempfile.Name()
+
+	defer os.Remove(tempfileName)
 	defer tempfile.Close()
 
-	tempfileName := tempfile.Name()
-	err = ioutil.WriteFile(tempfileName, m.msg, 0644)
+	err = ioutil.WriteFile(tempfileName, m.msg, 0600)
 	if err != nil {
 		return err
 	}

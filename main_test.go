@@ -2,14 +2,17 @@ package main
 
 import (
 	"io/ioutil"
+	"os"
 	"testing"
 )
 
 func TestParseYamlSuccessfully(t *testing.T) {
 	tempfile, _ := ioutil.TempFile("", "")
+	tempfileName := tempfile.Name()
+
+	defer os.Remove(tempfileName)
 	defer tempfile.Close()
 
-	tempfileName := tempfile.Name()
 	ioutil.WriteFile(
 		tempfileName,
 		[]byte("address: hoge@example.com\npassword: xxx"),
